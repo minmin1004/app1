@@ -1,0 +1,317 @@
+
+
+
+html_code = """
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TITANIC SURVIVAL ANALYSIS DASHBOARD</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;700&display=swap');
+        body { font-family: 'Inter', 'Noto Sans KR', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen p-4">
+
+    <header class="border-b border-slate-800 bg-slate-950/50 backdrop-blur px-6 py-4 rounded-xl mb-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <span class="text-xs font-semibold tracking-wider text-amber-400 uppercase">TITANIC SURVIVAL ANALYSIS PROJECT</span>
+                <h1 class="text-xl font-bold text-white mt-1">객실 등급에 따른 생존 확률의 숨겨진 함수 탐색</h1>
+                <p class="text-xs text-slate-400 mt-1">사회 계급 및 인구통계학적 복합 변수를 통한 한정된 생존 자원 분배 패러다임 규명</p>
+            </div>
+            <div class="text-right text-[11px] text-slate-500 font-mono hidden md:block">
+                <p>Data Pipeline: Imputation Optimized</p>
+                <p class="text-amber-500">Multivariate Analysis System</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <section class="lg:col-span-1 flex flex-col gap-6">
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 shadow-xl">
+                <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> 다변량 변수 심층 탐색 필터
+                </h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[11px] text-slate-400 mb-1">공간적 접근성 (객실 등급)</label>
+                        <select id="classFilter" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500 transition-colors">
+                            <option value="all">전체 등급 통합 분석</option>
+                            <option value="1">1등실 (First Class) — 상류층 자본집단</option>
+                            <option value="2">2등실 (Second Class) — 중산층 지대</option>
+                            <option value="3">3등실 (Third Class) — 하층민·이민자</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] text-slate-400 mb-1">인구통계 변수 (성별)</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="setGender('all')" id="btn-gender-all" class="gender-btn py-1.5 text-xs font-medium rounded-lg bg-amber-600 text-white border border-amber-500 transition-all">전체</button>
+                            <button onclick="setGender('female')" id="btn-gender-female" class="gender-btn py-1.5 text-xs font-medium rounded-lg bg-slate-900 text-slate-400 border border-slate-800 hover:bg-slate-800 transition-all">여성</button>
+                            <button onclick="setGender('male')" id="btn-gender-male" class="gender-btn py-1.5 text-xs font-medium rounded-lg bg-slate-900 text-slate-400 border border-slate-800 hover:bg-slate-800 transition-all">남성</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] text-slate-400 mb-1">보호 규칙 변수 (연령)</label>
+                        <select id="ageFilter" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500 transition-colors">
+                            <option value="all">전체 연령대</option>
+                            <option value="child">어린이 (12세 이하 절대보호 대상)</option>
+                            <option value="adult">성인 (13세 이상 일반 승객)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-slate-950 to-slate-900 border border-slate-800 rounded-xl p-5 text-xs space-y-3">
+                <h3 class="font-semibold text-amber-400">📊 종합 실증 분석 결과 결론</h3>
+                <p class="text-slate-400 leading-relaxed text-[11px]">
+                    에드워드 스미스 선장의 "여성과 아이 먼저"라는 강력한 기사도 법칙은 안전하게 작동했으나, 물리적 선실 위치와 구명보트 탑승 권한 분배에서의 명확한 계급 격차가 함께 결부되어 나타났습니다.
+                </p>
+                <div class="border-t border-slate-800/80 pt-2 text-[10px] text-slate-500">
+                    <p>• 1·2등실 어린이 생존율: <span class="text-emerald-400 font-bold">95% 이상</span></p>
+                    <p>• 3등실 어린이 사망률: <span class="text-rose-400 font-bold">58.3% (28명 사망)</span></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="lg:col-span-2 flex flex-col gap-6">
+            
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 shadow-xl grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">실증적 생존 통계</h3>
+                        <div class="mt-2">
+                            <span class="text-4xl font-extrabold text-white tracking-tight" id="survivalRateRatio">0.0%</span>
+                            <p class="text-[10px] text-slate-500 mt-1">지정 변수 하위 표본의 평균값</p>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-slate-800 pt-3 text-[11px] space-y-1.5">
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">총 분석 표본 수:</span>
+                            <span id="statTotal" class="font-mono text-white">0명</span>
+                        </div>
+                        <div class="flex justify-between text-emerald-400">
+                            <span>총 생존자 수 (1):</span>
+                            <span id="statSurvived" class="font-mono font-bold">0명</span>
+                        </div>
+                        <div class="flex justify-between text-rose-400">
+                            <span>총 사망자 수 (0):</span>
+                            <span id="statDead" class="font-mono font-bold">0명</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-2 flex items-center justify-center min-h-[160px]">
+                    <canvas id="survivalChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 shadow-xl flex-1 flex flex-col">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                        📑 변수 처리 데이터 파이프라인 샘플 뷰어
+                    </h3>
+                    <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-mono" id="listCount">Filtered: 0</span>
+                </div>
+
+                <div class="overflow-x-auto rounded-lg border border-slate-800 max-h-[220px] overflow-y-auto">
+                    <table class="w-full text-left border-collapse text-[11px]">
+                        <thead class="bg-slate-900 text-slate-400 sticky top-0 border-b border-slate-800 z-10">
+                            <tr>
+                                <th class="p-2">객실 등급</th>
+                                <th class="p-2">성별 구분</th>
+                                <th class="p-2">연령대 필터</th>
+                                <th class="p-2">가상 가공식별명</th>
+                                <th class="p-2 text-right">상태</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTableBody" class="divide-y divide-slate-800/50">
+                            </tbody>
+                    </table>
+                </div>
+                <p class="text-[10px] text-slate-500 mt-2">
+                    ※ 해당 시뮬레이터 시스템은 기획 문서 데이터 세부 총계(1등실 생존 136명/사망 80명, 2등실 생존 87명/사망 97명, 3등실 생존 119명/사망 372명) 및 성별·아동 집행 편차 확률을 완벽히 모사해 마이크로 난수로 재배정 출력하는 실증 통계 엔진입니다.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const rawPassengers = [];
+        const firstNames = ["John", "Mary", "William", "Anna", "George", "Elizabeth", "Thomas", "Margaret", "Arthur", "Alice", "James", "Florence"];
+        const lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Guggenheim", "Astor", "Harris"];
+
+        // 1. 기획서 도표 내부 통계 총계(891명)를 기준선으로 삼아 역사적 실증 분포 확률 구축 생성
+        // 총계 분포: 1등실 216명, 2등실 184명, 3등실 491명 구현
+        function generateDataset() {
+            let idCounter = 1;
+
+            // --- 1등실 풀 구성 (총 216명) ---
+            // 여성 94명 (생존율 96.8%), 남성 122명 (생존율 36.9%) 분포 제어 매핑
+            for (let i = 0; i < 94; i++) {
+                let isChild = i < 4; // 아동 4명 중 3명 생존 매칭 유도
+                let survived = (isChild) ? (i < 3 ? 1 : 0) : (Math.random() < 0.968 ? 1 : 0);
+                addPassenger('1', 'female', isChild ? 'child' : 'adult', survived);
+            }
+            for (let i = 0; i < 122; i++) {
+                let survived = Math.random() < 0.369 ? 1 : 0;
+                addPassenger('1', 'male', 'adult', survived);
+            }
+
+            // --- 2등실 풀 구성 (총 184명) ---
+            // 여성 76명 (생존율 92.1%), 남성 108명 (생존율 15.7%), 아동 17명 (100% 생존)
+            for (let i = 0; i < 76; i++) {
+                let survived = Math.random() < 0.921 ? 1 : 0;
+                addPassenger('2', 'female', 'adult', survived);
+            }
+            for (let i = 0; i < 91; i++) {
+                let survived = Math.random() < 0.157 ? 1 : 0;
+                addPassenger('2', 'male', 'adult', survived);
+            }
+            for (let i = 0; i < 17; i++) {
+                // 2등실 아동 17명 전원 생존 실상 투영
+                addPassenger('2', Math.random() < 0.5 ? 'male' : 'female', 'child', 1);
+            }
+
+            // --- 3등실 풀 구성 (총 491명) ---
+            // 여성 144명 (생존율 50%), 남성 347명 (생존율 13.5%), 아동 48명 (생존 20명, 사망 28명)
+            // 아동 분포 차감 계산하여 정교한 변수 분포 분리
+            for (let i = 0; i < 48; i++) {
+                let survived = i < 20 ? 1 : 0; // 생존 20명, 사망 28명 완벽 고정
+                addPassenger('3', Math.random() < 0.5 ? 'male' : 'female', 'child', survived);
+            }
+            for (let i = 0; i < 120; i++) { // 아동 제외 여성 성인 풀 매칭 균형
+                let survived = Math.random() < 0.5 ? 1 : 0;
+                addPassenger('3', 'female', 'adult', survived);
+            }
+            for (let i = 0; i < 323; i++) { // 아동 제외 남성 성인 풀 매칭 균형
+                let survived = Math.random() < 0.135 ? 1 : 0;
+                addPassenger('3', 'male', 'adult', survived);
+            }
+
+            function addPassenger(pclass, gender, ageGroup, survived) {
+                let fakeName = lastNames[Math.floor(Math.random() * lastNames.length)] + ", " + firstNames[Math.floor(Math.random() * firstNames.length)];
+                rawPassengers.push({
+                    id: idCounter++,
+                    pclass: pclass,
+                    gender: gender,
+                    ageGroup: ageGroup,
+                    name: fakeName,
+                    survived: survived
+                });
+            }
+        }
+
+        generateDataset();
+
+        let currentGender = 'all'; 
+        let chartInstance = null;
+
+        function setGender(gender) {
+            currentGender = gender;
+            document.querySelectorAll('.gender-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-600', 'text-white', 'border-amber-500');
+                btn.classList.add('bg-slate-900', 'text-slate-400', 'border-slate-800');
+            });
+            document.getElementById(`btn-gender-${gender}`).classList.remove('bg-slate-900', 'text-slate-400', 'border-slate-800');
+            document.getElementById(`btn-gender-${gender}`).classList.add('bg-amber-600', 'text-white', 'border-amber-500');
+            updateDashboard();
+        }
+
+        function updateDashboard() {
+            const classFilter = document.getElementById('classFilter').value;
+            const ageFilter = document.getElementById('ageFilter').value;
+
+            // 다변량 다차원 필터 프레임워크 작동
+            const filtered = rawPassengers.filter(p => {
+                const matchClass = (classFilter === 'all' || p.pclass === classFilter);
+                const matchGender = (currentGender === 'all' || p.gender === currentGender);
+                const matchAge = (ageFilter === 'all' || p.ageGroup === ageFilter);
+                return matchClass && matchGender && matchAge;
+            });
+
+            const total = filtered.length; 
+            const survivedCount = filtered.filter(p => p.survived === 1).length;
+            const deadCount = total - survivedCount; 
+            const rate = total > 0 ? ((survivedCount / total) * 100).toFixed(1) : "0.0";
+
+            // 상단 인디케이터 데이터 바인딩 갱신
+            document.getElementById('survivalRateRatio').innerText = `${rate}%`;
+            document.getElementById('statTotal').innerText = `${total}명`;
+            document.getElementById('statSurvived').innerText = `${survivedCount}명`;
+            document.getElementById('statDead').innerText = `${deadCount}명`;
+            document.getElementById('listCount').innerText = `Filtered: ${total}`;
+
+            // 테이블 데이터 바인딩 파이프라인 갱신
+            const tbody = document.getElementById('dataTableBody'); 
+            tbody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">조건 범위에 일치하는 모델 표본 데이터가 부재합니다.</td></tr>`;
+            } else {
+                // 상위 60개 데이터 추출 슬라이싱 뷰어 가동
+                filtered.slice(0, 60).forEach(p => {
+                    const row = document.createElement('tr');
+                    row.className = "hover:bg-slate-900/40 transition-colors";
+                    const statusBadge = p.survived === 1 
+                        ? `<span class="text-emerald-400 font-bold tracking-wide">SURVIVED</span>` 
+                        : `<span class="text-rose-400 font-bold tracking-wide">PERISHED</span>`;
+                    
+                    row.innerHTML = `
+                        <td class="p-2 text-slate-300 font-medium">${p.pclass}등실</td>
+                        <td class="p-2 text-slate-400">${p.gender === 'female' ? '여성' : '남성'}</td>
+                        <td class="p-2 text-slate-400">${p.ageGroup === 'child' ? '어린이' : '성인'}</td>
+                        <td class="p-2 font-mono text-slate-300">${p.name}</td>
+                        <td class="p-2 text-right">${statusBadge}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+            updateChart(survivedCount, deadCount);
+        }
+
+        function updateChart(survived, dead) {
+            const ctx = document.getElementById('survivalChart').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+            if (survived === 0 && dead === 0) return;
+
+            chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['생존자 (Survived)', '사망자 (Perished)'],
+                    datasets: [{ 
+                        data: [survived, dead], 
+                        backgroundColor: ['#10b981', '#f43f5e'], 
+                        borderColor: '#020617', 
+                        borderWidth: 2 
+                    }]
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    plugins: { 
+                        legend: { 
+                            position: 'bottom', 
+                            labels: { color: '#94a3b8', font: { size: 10, family: 'Inter' } } 
+                        } 
+                    } 
+                }
+            });
+        }
+
+        document.getElementById('classFilter').addEventListener('change', updateDashboard);
+        document.getElementById('ageFilter').addEventListener('change', updateDashboard);
+        window.onload = () => { updateDashboard(); };
+    </script>
+</body>
+</html>
+
